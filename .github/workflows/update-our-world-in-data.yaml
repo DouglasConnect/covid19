@@ -1,0 +1,28 @@
+# This workflow runs as a cron job to download the current version of the our world in
+# data covid 19 dataset and publishes a new version of this dataset into our edelweiss
+# data develop instance
+name: Update our world in data dataset
+
+on:
+  schedule:
+  - cron: '3 21 * * *'
+
+
+jobs:
+
+  test:
+    name: Build server and run tests
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout the repository
+      uses: actions/checkout@master
+
+    - name: install libraries
+      working-directory: our-world-in-data
+      run: pip install -r dependencies.txt
+
+    - name: run update
+      working-directory: our-world-in-data
+      env:
+        REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
+      run: python update-full-data.py
