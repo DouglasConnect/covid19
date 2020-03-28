@@ -11,7 +11,7 @@ on:
 jobs:
 
   test:
-    name: Build server and run tests
+    name: Update our world in data dataset
     runs-on: ubuntu-latest
     steps:
     - name: Checkout the repository
