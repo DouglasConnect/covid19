@@ -1,5 +1,5 @@
 import pandas
-import datetime
+from datetime import datetime, timezone
 from edelweiss_data import API
 
 location = r"https://covid.ourworldindata.org/data/ecdc/full_data.csv"

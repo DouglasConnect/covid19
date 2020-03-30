@@ -72,8 +72,7 @@ This dataset represents a merged dataset in long form (one row per country/regio
     )
 
 
-def upload_dataset(api, now, source, dataframe, description=None):
-    dataset = api.create_in_progress_dataset("COVID-19 dataset by John Hopkins University - {}".format(source["label"]))
+def upload_data(api, now, source, dataframe, dataset, description=None)
     try:
         with tempfile.TemporaryFile(mode="w+") as temp:
             dataframe.to_csv(temp, line_terminator="\n")
@@ -89,6 +88,11 @@ def upload_dataset(api, now, source, dataframe, description=None):
         print("not published: ", err.response.text)
 
 
+def upload_dataset(api, now, source, dataframe, description=None):
+    dataset = api.create_in_progress_dataset("COVID-19 dataset by John Hopkins University - {}".format(source["label"]))
+    upload_data(api, now, source, dataframe, description)
+
+
 def update_dataset(api, now, source, dataframe, description=None):
     datasetname = "COVID-19 dataset by John Hopkins University - {}".format(source["label"])
     datasets_filter = Q.exact_search(Q.system_column("name"), datasetname)
@@ -97,16 +101,4 @@ def update_dataset(api, now, source, dataframe, description=None):
         raise Exception("Did not get exactly one dataset named {}".format(datasetname))
     published_dataset = datasets.iloc[0, -1]
     dataset = published_dataset.new_version()
-    try:
-        with tempfile.TemporaryFile(mode="w+") as temp:
-            dataframe.to_csv(temp, line_terminator="\n")
-            temp.seek(0)
-            dataset.upload_data(temp)
-        dataset.infer_schema()
-        dataset.upload_metadata(create_metadata(now, source["url"]))
-        if description is None:
-            description = create_description(now, source["label"], source["url"])
-        dataset.set_description(description)
-        published_dataset = dataset.publish("Data update at {}".format(now))
-    except requests.HTTPError as err:
-        print("not published: ", err.response.text)
+    upload_data(api, now, source, dataframe, description)
