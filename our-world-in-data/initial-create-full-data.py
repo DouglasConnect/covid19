@@ -16,23 +16,25 @@ dataframe = pandas.read_csv(location)
 
 now = datetime.now(timezone.utc)
 
-metadata =
-    { 'datetimeRetrieved': "{}".format(now),
-      'upstreamSource': location,
-      'originalDataCollectionAgency': "https://www.ecdc.europa.eu/en/coronavirus",
-      'dataBackgroundInformation': "https://ourworldindata.org/coronavirus-source-data",
-      'category': 'covid-19',
-      'keywords': 'covid-19; cases; deaths; by country'
-    }
+metadata = {
+    "datetimeRetrieved": "{}".format(now),
+    "upstreamSource": location,
+    "originalDataCollectionAgency": "https://www.ecdc.europa.eu/en/coronavirus",
+    "dataBackgroundInformation": "https://ourworldindata.org/coronavirus-source-data",
+    "category": "covid-19",
+    "keywords": "covid-19; cases; deaths; by country",
+}
 
 description = """This dataset was created at {} created once daily around 6pm CET from [the original dataset by our world in data]({}) which in turn sources the data from the European Centre for Disease Prevention and Control (ECDC)
 ([more information on the process](https://ourworldindata.org/coronavirus-source-data)).
-""".format(now, location)
+""".format(
+    now, location
+)
 
 
-edelweiss_api_url = 'https://api.develop.edelweiss.douglasconnect.com'
+edelweiss_api_url = "https://api.develop.edelweiss.douglasconnect.com"
 api = API(edelweiss_api_url)
-api.authenticate(refresh_token=os.environ.get('REFRESH_TOKEN'))
+api.authenticate(refresh_token=os.environ.get("REFRESH_TOKEN"))
 
 
 dataset = api.create_in_progress_dataset(name)
@@ -41,7 +43,7 @@ try:
     dataset.infer_schema()
     dataset.upload_metadata(metadata)
     dataset.set_description(description)
-    published_dataset = dataset.publish('First import on {}'.format(now))
-    print('DATASET published:',published_dataset)
+    published_dataset = dataset.publish("First import on {}".format(now))
+    print("DATASET published:", published_dataset)
 except requests.HTTPError as err:
-    print('not published: ', err.response.text)
+    print("not published: ", err.response.text)
