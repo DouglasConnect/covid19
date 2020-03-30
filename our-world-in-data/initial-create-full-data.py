@@ -2,15 +2,6 @@ import pandas
 import datetime
 from edelweiss_data import API
 
-# location = r"https://covid.ourworldindata.org/data/ecdc/total_deaths.csv"
-# df = pandas.read_csv(location)
-# pivoted = df.melt(id_vars=['date'])
-# pivoted.columns = ['date', 'country', 'deaths']
-# reindexed = pivoted.set_index(['date', 'country'])
-# cleaned = reindexed.dropna()
-# converted = cleaned.astype({'deaths': 'int32'})
-# converted.to_csv("test.csv")
-
 location = r"https://covid.ourworldindata.org/data/ecdc/full_data.csv"
 dataframe = pandas.read_csv(location)
 

@@ -1,0 +1,35 @@
+# This workflow runs as a cron job to download the current version of the John Hopkins
+# University covid 19 datasets and publishes a new version of these datasets into our edelweiss
+# data develop instance
+name: Update John Hopkins University dataset
+
+on:
+  schedule:
+  - cron: '15 0 * * *'
+
+
+jobs:
+
+  test:
+    name: Update John Hopkins University dataset
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout the repository
+      uses: actions/checkout@master
+
+    - name: Set up Python
+      uses: actions/setup-python@v1
+      with:
+        python-version: '3.7'
+
+    - name: Install dependencies
+      working-directory: john-hopkins-university
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: run update
+      working-directory: john-hopkins-university
+      env:
+        REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
+      run: python update-full-data.py
