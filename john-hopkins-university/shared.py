@@ -90,7 +90,7 @@ def upload_data(api, now, source, dataframe, dataset, description=None):
 
 def upload_dataset(api, now, source, dataframe, description=None):
     dataset = api.create_in_progress_dataset("COVID-19 dataset by John Hopkins University - {}".format(source["label"]))
-    upload_data(api, now, source, dataframe, description)
+    upload_data(api, now, source, dataframe, dataset, description)
 
 
 def update_dataset(api, now, source, dataframe, description=None):
@@ -101,4 +101,4 @@ def update_dataset(api, now, source, dataframe, description=None):
         raise Exception("Did not get exactly one dataset named {}".format(datasetname))
     published_dataset = datasets.iloc[0, -1]
     dataset = published_dataset.new_version()
-    upload_data(api, now, source, dataframe, description)
+    upload_data(api, now, source, dataframe, dataset, description)
