@@ -15,7 +15,7 @@ metadata = {
     "originalDataCollectionAgency": "https://www.ecdc.europa.eu/en/coronavirus",
     "dataBackgroundInformation": "https://ourworldindata.org/coronavirus-source-data",
     "category": "covid-19",
-    "keywords": "covid-19; cases; deaths; by country",
+    "keywords": ["covid-19", "cases", "deaths", "by country"],
 }
 
 description = """This dataset was created at {} created once daily around 6pm CET from [the original dataset by our world in data]({}) which in turn sources the data from the European Centre for Disease Prevention and Control (ECDC)

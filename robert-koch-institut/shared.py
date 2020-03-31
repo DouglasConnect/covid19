@@ -12,7 +12,7 @@ def get_metadata(now):
         "originalDataCollectionAgency": "https://www.rki.de",
         "dataBackgroundInformation": "https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Fallzahlen.html",
         "category": "covid-19",
-        "keywords": "covid-19; cases; deaths; Germany",
+        "keywords": ["covid-19", "cases", "deaths", "by country"],
     }
 
 def get_description(now):

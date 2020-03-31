@@ -42,7 +42,7 @@ def create_metadata(now, location):
         "originalDataCollectionAgency": "https://systems.jhu.edu/",
         "dataBackgroundInformation": "https://github.com/CSSEGISandData/COVID-19",
         "category": "covid-19",
-        "keywords": "covid-19; cases; deaths; by country",
+        "keywords": ["covid-19", "cases", "deaths", "by country"],
     }
 
 
