@@ -2,3 +2,4 @@ pandas
 edelweiss_data
 requests
 beautifulsoup4
+html5lib

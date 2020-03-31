@@ -72,7 +72,7 @@ This dataset represents a merged dataset in long form (one row per country/regio
     )
 
 
-def upload_data(api, now, source, dataframe, dataset, description=None)
+def upload_data(api, now, source, dataframe, dataset, description=None):
     try:
         with tempfile.TemporaryFile(mode="w+") as temp:
             dataframe.to_csv(temp, line_terminator="\n")
