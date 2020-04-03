@@ -1,11 +1,11 @@
 import pandas
-from datetime import datetime, timezone
+import datetime
 from edelweiss_data import API
 
 location = r"https://covid.ourworldindata.org/data/ecdc/full_data.csv"
 dataframe = pandas.read_csv(location)
 
-now = datetime.now(timezone.utc)
+now = datetime.datetime.now(timezone.utc)
 
 metadata = {
     "datetimeRetrieved": "{}".format(now),

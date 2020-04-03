@@ -2,6 +2,7 @@ import requests
 import pandas
 import os
 import tempfile
+import datetime
 from edelweiss_data import QueryExpression as Q
 
 url = "https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Fallzahlen.html"
