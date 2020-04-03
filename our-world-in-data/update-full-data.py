@@ -37,6 +37,11 @@ api.authenticate(refresh_token=os.environ.get("REFRESH_TOKEN"))
 
 
 published_dataset = api.get_published_dataset("e06e9223-5e5d-42c2-a090-feba0bcee19a")
+try:
+    in_progress = api.get_in_progress_dataset(published_dataset.id)
+    in_progress.delete()
+except:
+    pass
 dataset = published_dataset.new_version()
 try:
     dataset.set_name("COVID-19 dataset by Our World In Data")

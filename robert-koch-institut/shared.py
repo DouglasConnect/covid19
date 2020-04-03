@@ -67,5 +67,10 @@ def update_dataset(api, name, now, dataframe):
     if datasets.shape[1] != 1:
         raise Exception("Did not get exactly one dataset named {}".format(datasetname))
     published_dataset = datasets.iloc[0, -1]
+    try:
+        in_progress = api.get_in_progress_dataset(published_dataset.id)
+        in_progress.delete()
+    except:
+        pass
     dataset = published_dataset.new_version()
     upload_data(api, now, dataset, dataframe)

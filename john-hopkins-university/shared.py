@@ -44,7 +44,7 @@ def create_metadata(now, location):
         "upstreamSource": location,
         "originalDataCollectionAgency": "https://systems.jhu.edu/",
         "dataBackgroundInformation": "https://github.com/CSSEGISandData/COVID-19",
-        "estimatedReportingCutoff": datetime.datetime(reportingDay.year, reportingDay.month, reportingDay.day, 0, tzinfo=timezone.utc),
+        "estimatedReportingCutoff": datetime.datetime(reportingDay.year, reportingDay.month, reportingDay.day, 0, tzinfo=datetime.timezone.utc),
         "category": "covid-19",
         "keywords": ["covid-19", "cases", "deaths", "by country"],
         "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
@@ -109,5 +109,10 @@ def update_dataset(api, now, source, dataframe, description=None):
     if datasets.shape[1] != 1:
         raise Exception("Did not get exactly one dataset named {}".format(datasetname))
     published_dataset = datasets.iloc[0, -1]
+    try:
+        in_progress = api.get_in_progress_dataset(published_dataset.id)
+        in_progress.delete()
+    except:
+        pass
     dataset = published_dataset.new_version()
     upload_data(api, now, source, dataframe, dataset, description)
