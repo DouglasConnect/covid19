@@ -36,13 +36,17 @@ sources = [
 
 
 def create_metadata(now, location):
+    today = datetime.datetime.now()
+    reportingDay = today
     return {
         "datetimeRetrieved": "{}".format(now),
         "upstreamSource": location,
         "originalDataCollectionAgency": "https://systems.jhu.edu/",
         "dataBackgroundInformation": "https://github.com/CSSEGISandData/COVID-19",
+        "estimatedReportingCutoff": datetime.datetime(reportingDay.year, reportingDay.month, reportingDay.day, 0, tzinfo=timezone.utc),
         "category": "covid-19",
         "keywords": ["covid-19", "cases", "deaths", "by country"],
+        "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
     }
 
 
@@ -54,6 +58,8 @@ which in turn sources the data from the World Health Organization, the China CDC
 The upstream data release is split into several datasets which covers the numbers for COVID-19 cases, deaths and recovered cases in a wide format (timeseries with dates as columns). This dataset contains the numbers for the category "{}".
 
 A derived and merged dataset in long form (one row per country/region and date containing the numbers for cases, deaths and recovered) is available in Edelweiss Data as well.
+
+This data is made available in Edelweiss Data for easier consumption by the general public for educational purposes under a [CC BY-NC-SA license]("license": "https://creativecommons.org/licenses/by-nc-sa/4.0/")
     """.format(
         now, location, label
     )
@@ -67,6 +73,8 @@ which in turn sources the data from the World Health Organization, the China CDC
 
 The upstream data release is split into several datasets which covers the numbers for COVID-19 cases, deaths and recovered cases in a wide format (timeseries with dates as columns).
 This dataset represents a merged dataset in long form (one row per country/region and date containing the numbers for cases, deaths and recovered).
+
+This data is made available in Edelweiss Data for easier consumption by the general public for educational purposes under a [CC BY-NC-SA license]("license": "https://creativecommons.org/licenses/by-nc-sa/4.0/")
     """.format(
         now
     )
