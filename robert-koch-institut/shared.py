@@ -30,7 +30,7 @@ def get_data():
     response.raise_for_status()
     dataframes = pandas.read_html(response.text, flavor="bs4", thousands=".", decimal=",")
     df = dataframes[0]
-    df.columns = ["State", "Confirmed cases", "Confirmed cases difference to previous day", "confirmed cases per 100.000 population", "Deaths", "Notes"]
+    df.columns = ["State", "Confirmed cases", "Confirmed cases difference to previous day", "confirmed cases per 100.000 population", "Deaths"]
     df.iloc[-1, 0] = "Germany"
     return df
 
