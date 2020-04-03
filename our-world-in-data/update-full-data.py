@@ -9,11 +9,12 @@ now = datetime.datetime.now(datetime.timezone.utc)
 location = r"https://covid.ourworldindata.org/data/ecdc/full_data.csv"
 dataframe = pandas.read_csv(location)
 
+today = datetime.datetime.now()
+# Our world in data mainly uses data that is reported and compiled until 10 CEST -> 8 UTC but there is some delay until publishing
+reporting_day = today if today.hour >= 18 else today - datetime.timedelta(days=1)
+estimated_reporting_cutoff = datetime.datetime(reporting_day.year, reporting_day.month, reporting_day.day, 8, tzinfo=datetime.timezone.utc)
+
 metadata = {
-    today = datetime.datetime.now()
-    # Our world in data mainly uses data that is reported and compiled until 10 CEST -> 8 UTC but there is some delay until publishing
-    reporting_day = today if today.hour >= 18 else today - datetime.timedelta(days=1)
-    estimated_reporting_cutoff = datetime.datetime(reporting_day.year, reporting_day.month, reporting_day.day, 8, tzinfo=datetime.timezone.utc)
     "datetimeRetrieved": "{}".format(now),
     "upstreamSource": location,
     "originalDataCollectionAgency": "https://www.ecdc.europa.eu/en/coronavirus",
