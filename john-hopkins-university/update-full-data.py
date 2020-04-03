@@ -13,7 +13,7 @@ dataframes_for_merging = [
 ]  # dump the redundant lat/long columns for any but the first dataset
 merged = pandas.concat(dataframes_for_merging, axis=1)
 
-now = datetime.datetime.now(timezone.utc)
+now = datetime.datetime.now(datetime.timezone.utc)
 
 edelweiss_api_url = "https://api.develop.edelweiss.douglasconnect.com"
 api = API(edelweiss_api_url)

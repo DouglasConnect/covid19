@@ -4,7 +4,7 @@ from edelweiss_data import API
 import requests
 import os
 
-now = datetime.datetime.now(timezone.utc)
+now = datetime.datetime.now(datetime.timezone.utc)
 
 location = r"https://covid.ourworldindata.org/data/ecdc/full_data.csv"
 dataframe = pandas.read_csv(location)
@@ -16,7 +16,7 @@ metadata = {
     "upstreamSource": location,
     "originalDataCollectionAgency": "https://www.ecdc.europa.eu/en/coronavirus",
     "dataBackgroundInformation": "https://ourworldindata.org/coronavirus-source-data",
-    "estimatedReportingCutoff": datetime.datetime(reportingDay.year, reportingDay.month, reportingDay.day, 8, tzinfo=timezone.utc),
+    "estimatedReportingCutoff": datetime.datetime(reportingDay.year, reportingDay.month, reportingDay.day, 8, tzinfo=datetime.timezone.utc),
     "category": "covid-19",
     "keywords": ["covid-19", "cases", "deaths", "by country"],
     "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",

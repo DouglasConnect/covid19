@@ -4,7 +4,7 @@ from edelweiss_data import API
 from shared import *
 
 df = get_data()
-now = datetime.datetime.now(timezone.utc)
+now = datetime.datetime.now(datetime.timezone.utc)
 
 edelweiss_api_url = "https://api.develop.edelweiss.douglasconnect.com"
 api = API(edelweiss_api_url)

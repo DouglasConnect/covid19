@@ -14,7 +14,7 @@ def get_metadata(now):
         "upstreamSource": url,
         "originalDataCollectionAgency": "https://www.rki.de",
         "dataBackgroundInformation": "https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Fallzahlen.html",
-        "estimatedReportingCutoff": datetime.datetime(reportingDay.year, reportingDay.month, reportingDay.day, 22, tzinfo=timezone.utc), # RKI data is supposed to include cases until midnight CEST
+        "estimatedReportingCutoff": datetime.datetime(reportingDay.year, reportingDay.month, reportingDay.day, 22, tzinfo=datetime.timezone.utc), # RKI data is supposed to include cases until midnight CEST
         "category": "covid-19",
         "keywords": ["covid-19", "cases", "deaths", "by country"],
         "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
