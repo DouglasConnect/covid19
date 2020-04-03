@@ -38,13 +38,15 @@ sources = [
 
 def create_metadata(now, location):
     today = datetime.datetime.now()
-    reportingDay = today
+    reporting_day = today
+    # John Hopkins data is updated around 0:00 UCT but because it aggregates so much it's unclear when exactly the reporting interval ends
+    estimated_reporting_cutoff = datetime.datetime(reporting_day.year, reporting_day.month, reporting_day.day, 0, tzinfo=datetime.timezone.utc)
     return {
         "datetimeRetrieved": "{}".format(now),
         "upstreamSource": location,
         "originalDataCollectionAgency": "https://systems.jhu.edu/",
         "dataBackgroundInformation": "https://github.com/CSSEGISandData/COVID-19",
-        "estimatedReportingCutoff": datetime.datetime(reportingDay.year, reportingDay.month, reportingDay.day, 0, tzinfo=datetime.timezone.utc),
+        "estimatedReportingCutoff": "{}".format(estimated_reporting_cutoff),
         "category": "covid-19",
         "keywords": ["covid-19", "cases", "deaths", "by country"],
         "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",

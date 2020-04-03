@@ -8,13 +8,16 @@ from edelweiss_data import QueryExpression as Q
 url = "https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Fallzahlen.html"
 
 def get_metadata(now):
-    today = datetime.datetime.now() # - datetime.timedelta(days=1)
-    reportingDay = today - datetime.timedelta(days=1) if today.hour >= 8 else today - datetime.timedelta(days=2)
+    today = datetime.datetime.now()
+    # RKI data is updated around 8:00 CEST
+    # RKI data is supposed to include cases until midnight CEST->22:00 UTC yesterday
+    reporting_day = today - datetime.timedelta(days=1) if today.hour >= 8 else today - datetime.timedelta(days=2)
+    estimated_reporting_cutoff = datetime.datetime(reporting_day.year, reporting_day.month, reporting_day.day, 22, tzinfo=datetime.timezone.utc)
     return { "datetimeRetrieved": "{}".format(now),
         "upstreamSource": url,
         "originalDataCollectionAgency": "https://www.rki.de",
         "dataBackgroundInformation": "https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Fallzahlen.html",
-        "estimatedReportingCutoff": datetime.datetime(reportingDay.year, reportingDay.month, reportingDay.day, 22, tzinfo=datetime.timezone.utc), # RKI data is supposed to include cases until midnight CEST
+        "estimatedReportingCutoff": "{}".format(estimated_reporting_cutoff),
         "category": "covid-19",
         "keywords": ["covid-19", "cases", "deaths", "by country"],
         "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
