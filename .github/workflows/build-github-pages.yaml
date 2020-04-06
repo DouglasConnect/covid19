@@ -1,5 +1,8 @@
 name: Build and deploy to GitHub pages
-on: [push]
+on:
+  push:
+    branches:
+      - master
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -21,4 +24,3 @@ jobs:
           BRANCH: gh-pages
           FOLDER: app/build
           CLEAN: true
-          COMMIT_MESSAGE:
