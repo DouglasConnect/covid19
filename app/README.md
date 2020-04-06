@@ -1,20 +1,6 @@
-# COVID-19 Data for Slovenia
+# EdelweissData COVID-19 data sources
 
-This repository contains the code for visualizing the COVID-19 Data for Slovenia.
-
-The visualization is available at https://joahim.github.io/covid-19
-
-The data used in the visualization is sourced from the excellent https://tinyurl.com/slo-covid-19
-
-The data is also available in the following formats:
-
-* CSV from https://github.com/slo-covid-19/data/tree/master/csv
-* JSON from https://covid19.rthand.com/api/data
-
-For more in-depth information about the COVID-19 in Slovenia you may also want to check https://covid19.rtfm.si/
-
-Note: until I discovered https://tinyurl.com/slo-covid-19 this project collected it's own data. I do not plan to do this anymore.
-
+This repository explains how to ingest and use various COVID-19 data sources using EdelweissData.
 
 ## Development
 
@@ -39,4 +25,4 @@ To build the application and make ready for production:
 ```
 npm run build
 ```
-This command builds the application and puts the generated files into the `docs` directory (can be overwritten in webpack.config.js).
+This command builds the application and puts the generated files into the `build` folder.
