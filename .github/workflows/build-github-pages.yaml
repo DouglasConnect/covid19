@@ -1,0 +1,26 @@
+name: Build and deploy to GitHub pages
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install and Build
+        run: |
+          cd app
+          yarn install
+          yarn run build
+
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@releases/v3
+        with:
+          # See https://github.com/marketplace/actions/deploy-to-github-pages for configuration options
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: app/build
+          CLEAN: true

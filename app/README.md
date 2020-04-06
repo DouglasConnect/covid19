@@ -1,0 +1,28 @@
+# EdelweissData COVID-19 data sources
+
+This repository explains how to ingest and use various COVID-19 data sources using EdelweissData.
+
+## Development
+
+This project is built using [Fable](http://fable.io/), [Elmish](https://fable-elmish.github.io/) and [Feliz](https://github.com/Zaid-Ajaj/Feliz).
+
+### Requirements
+
+* [dotnet SDK](https://www.microsoft.com/net/download/core) 2.0.0 or higher
+* [node.js](https://nodejs.org) 10.0.0 or higher
+
+### Running and building the project
+
+Before doing anything, start with installing yarn dependencies using `yarn install`.
+
+Then to start development mode with hot module reloading, run:
+```bash
+npm start
+```
+This will start the development server after compiling the project, once it is finished, navigate to http://localhost:8080 to view the application .
+
+To build the application and make ready for production:
+```
+npm run build
+```
+This command builds the application and puts the generated files into the `build` folder.
