@@ -23,13 +23,13 @@ jobs:
         python-version: '3.7'
 
     - name: Install dependencies
-      working-directory: john-hopkins-university
+      working-directory: data-import-scripts
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
     - name: run update
-      working-directory: john-hopkins-university
+      working-directory: data-import-scripts
       env:
         REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
-      run: python update-full-data.py
+      run: python john-hopkins-university.py

@@ -1,7 +1,14 @@
+# For the John Hopkins data we publish the three single datasets for global confirmed cases, deaths and recovered,
+# but then also one merged dataset that has all three of these indicators
+
+from shared import create_or_update_dataset
+import requests
 import pandas
+import os
 import tempfile
 import datetime
 from edelweiss_data import QueryExpression as Q
+
 
 def clean_dataframe(df, value_column_name):
     pivoted = df.melt(
@@ -36,11 +43,17 @@ sources = [
 ]
 
 
-def create_metadata(now, location):
+def get_metadata(now, location):
     today = datetime.datetime.now()
     reporting_day = today
     # John Hopkins data is updated around 0:00 UCT but because it aggregates so much it's unclear when exactly the reporting interval ends
-    estimated_reporting_cutoff = datetime.datetime(reporting_day.year, reporting_day.month, reporting_day.day, 0, tzinfo=datetime.timezone.utc)
+    estimated_reporting_cutoff = datetime.datetime(
+        reporting_day.year,
+        reporting_day.month,
+        reporting_day.day,
+        0,
+        tzinfo=datetime.timezone.utc,
+    )
     return {
         "datetimeRetrieved": "{}".format(now),
         "upstreamSource": location,
@@ -53,7 +66,7 @@ def create_metadata(now, location):
     }
 
 
-def create_description(now, label, location):
+def get_description(now, label, location):
     return """This dataset was created at {} and is updated daily around 1am GMT from [the original dataset by the Johns Hopkins University Center for Systems Science and Engineering]({})
 which in turn sources the data from the World Health Organization, the China CDC and several other national institutions
 ([more information on the process](https://github.com/CSSEGISandData/COVID-19))
@@ -68,7 +81,7 @@ This data is made available in Edelweiss Data for easier consumption by the gene
     )
 
 
-def create_merged_description(now):
+def get_merged_description(now):
     return """This dataset was created at {} and is updated daily around 1am GMT from [several original dataset by the
 Johns Hopkins University Center for Systems Science and Engineering](https://github.com/CSSEGISandData/COVID-19)
 which in turn sources the data from the World Health Organization, the China CDC and several other national institutions
@@ -83,38 +96,25 @@ This data is made available in Edelweiss Data for easier consumption by the gene
     )
 
 
-def upload_data(api, now, source, dataframe, dataset, description=None):
-    try:
-        with tempfile.TemporaryFile(mode="w+") as temp:
-            dataframe.to_csv(temp, line_terminator="\n")
-            temp.seek(0)
-            dataset.upload_data(temp)
-        dataset.infer_schema()
-        dataset.upload_metadata(create_metadata(now, source["url"]))
-        if description is None:
-            description = create_description(now, source["label"], source["url"])
-        dataset.set_description(description)
-        published_dataset = dataset.publish("First import on {}".format(now))
-    except requests.HTTPError as err:
-        print("not published: ", err.response.text)
+dataframes = [download_and_clean(**source) for source in sources]
+
+dataframes_for_merging = [
+    dataframes[0],
+    dataframes[1].iloc[:, -1],
+    dataframes[2].iloc[:, -1],
+]  # dump the redundant lat/long columns for any but the first dataset
+merged = pandas.concat(dataframes_for_merging, axis=1)
+
+now = datetime.datetime.now(datetime.timezone.utc)
 
 
-def upload_dataset(api, now, source, dataframe, description=None):
-    dataset = api.create_in_progress_dataset("COVID-19 dataset by John Hopkins University - {}".format(source["label"]))
-    upload_data(api, now, source, dataframe, dataset, description)
+for source, data in zip(sources, dataframes):
+    name = "COVID-19 dataset by John Hopkins University - {}".format(source["label"])
+    metadata = get_metadata(now, source["url"])
+    description = get_description(now, source["label"], source["url"])
+    create_or_update_dataset(name, source["url"], metadata, description, data)
 
-
-def update_dataset(api, now, source, dataframe, description=None):
-    datasetname = "COVID-19 dataset by John Hopkins University - {}".format(source["label"])
-    datasets_filter = Q.exact_search(Q.system_column("name"), datasetname)
-    datasets = api.get_published_datasets(condition=datasets_filter)
-    if datasets.shape[1] != 1:
-        raise Exception("Did not get exactly one dataset named {}".format(datasetname))
-    published_dataset = datasets.iloc[0, -1]
-    try:
-        in_progress = api.get_in_progress_dataset(published_dataset.id)
-        in_progress.delete()
-    except:
-        pass
-    dataset = published_dataset.new_version()
-    upload_data(api, now, source, dataframe, dataset, description)
+name = "COVID-19 dataset by John Hopkins University - Merged long form (cases, deaths, recovered)"
+metadata = get_metadata(now, [source["url"] for source in sources])
+description = get_merged_description(now)
+create_or_update_dataset(name, source["url"], metadata, description, merged)
