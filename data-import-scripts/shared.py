@@ -55,7 +55,7 @@ def update_dataset(api, name, dataframe, metadata, description):
 
 def create_or_update_dataset(name, url, metadata, description, data):
     """ Create or update a dataset with a given name """
-    edelweiss_api_url = "https://api.edelweissdata.edelweissconnect.com"
+    edelweiss_api_url = "https://api.edelweissdata.com"
     api = API(edelweiss_api_url)
     api.authenticate(refresh_token=os.environ.get("REFRESH_TOKEN"))
 
