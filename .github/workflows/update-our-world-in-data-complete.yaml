@@ -32,4 +32,4 @@ jobs:
       working-directory: data-import-scripts
       env:
         REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
-      run: python our-word-in-data-complete.py
+      run: python our-world-in-data-complete.py
