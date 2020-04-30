@@ -9,7 +9,6 @@ from edelweiss_data import QueryExpression as Q
 
 name = "COVID-19 timeseries data for Germany by state (RKI data)"
 url = r"https://opendata.arcgis.com/datasets/dd4580c810204019a7b8eb3e0b329dd6_0.csv"
-df = pandas.read_csv(url)
 
 
 def get_metadata(now):
