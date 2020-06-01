@@ -43,7 +43,7 @@ sources = [
 ]
 
 
-def get_metadata(now, location):
+def get_metadata(now, location, regions):
     today = datetime.datetime.now()
     reporting_day = today
     # John Hopkins data is updated around 0:00 UCT but because it aggregates so much it's unclear when exactly the reporting interval ends
@@ -63,11 +63,21 @@ def get_metadata(now, location):
         "category": "covid-19",
         "keywords": ["covid-19", "cases", "deaths", "by country"],
         "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+        "columnNames": {
+            "region": "Country/Region",
+            "date": "Date",
+            "total-cases": "TotalCases",
+            "total-deaths": "TotalDeaths",
+        },
+        "regions": regions,
     }
 
 
 def get_description(now, label, location):
-    return """This dataset was created at {} and is updated daily around 1am GMT from [the original dataset by the Johns Hopkins University Center for Systems Science and Engineering]({})
+    return """# COVID-19 data for all countries
+### Compiled and aggregated by John Hopkins University
+
+This dataset was created at {} and is updated daily around 1am GMT from [the original dataset by the Johns Hopkins University Center for Systems Science and Engineering]({})
 which in turn sources the data from the World Health Organization, the China CDC and several other national institutions
 ([more information on the process](https://github.com/CSSEGISandData/COVID-19))
 
@@ -106,15 +116,15 @@ dataframes_for_merging = [
 merged = pandas.concat(dataframes_for_merging, axis=1)
 
 now = datetime.datetime.now(datetime.timezone.utc)
-
+regions = list(set([ x[:2] for x in merged.index ]))
 
 for source, data in zip(sources, dataframes):
     name = "COVID-19 dataset by John Hopkins University - {}".format(source["label"])
-    metadata = get_metadata(now, source["url"])
+    metadata = get_metadata(now, source["url"], regions)
     description = get_description(now, source["label"], source["url"])
     create_or_update_dataset(name, source["url"], metadata, description, data)
 
 name = "COVID-19 dataset by John Hopkins University - Merged long form (cases, deaths, recovered)"
-metadata = get_metadata(now, [source["url"] for source in sources])
+metadata = get_metadata(now, [source["url"] for source in sources], regions) # We have a 3 level index and need all distinct entries of the first 2 levels
 description = get_merged_description(now)
 create_or_update_dataset(name, source["url"], metadata, description, merged)

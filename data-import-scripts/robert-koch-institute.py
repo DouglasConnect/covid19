@@ -11,7 +11,7 @@ name = "COVID-19 timeseries data for Germany by state (RKI data)"
 url = r"https://opendata.arcgis.com/datasets/dd4580c810204019a7b8eb3e0b329dd6_0.csv"
 
 
-def get_metadata(now):
+def get_metadata(now, regions):
     today = datetime.datetime.now()
     # RKI data is updated around 8:00 CEST
     # RKI data is supposed to include cases until midnight CEST->22:00 UTC yesterday
@@ -36,11 +36,22 @@ def get_metadata(now):
         "category": "covid-19",
         "keywords": ["covid-19", "cases", "deaths", "Germany"],
         "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+        "columnNames": {
+            "region": "State",
+            "date": "Date",
+            "daily-cases": "Cases",
+            "total-cases": "TotalCases",
+            "daily-deaths": "Deaths",
+            "total-deaths": "TotalDeaths",
+        },
+        "regions": regions,
     }
 
 
 def get_description(now):
-    return """This dataset was created at {}. It is updated once daily around 9:00 CEST from [the original dataset by the German Robert Koch Institut]({}) which gets the offial data once a day from the local health offices of the individual states.
+    return """# COVID-19 data for Germany
+### State level data as published by the Robert Koch Institue
+This dataset was created at {}. It is updated once daily around 9:00 CEST from [the original dataset by the German Robert Koch Institut]({}) which gets the offial data once a day from the local health offices of the individual states.
 ([more information on the process](https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Fallzahlen.html)).
 
 This data is made available in Edelweiss Data for easier consumption by the general public for educational purposes under a [CC BY-NC-SA license]("license": "https://creativecommons.org/licenses/by-nc-sa/4.0/")
@@ -71,7 +82,7 @@ def get_data():
 
 
 now = datetime.datetime.now(datetime.timezone.utc)
-metadata = get_metadata(now)
 description = get_description(now)
 data = get_data()
+metadata = get_metadata(now, [ item for item in data.index.get_level_values(0).unique() ])
 create_or_update_dataset(name, url, metadata, description, data)
