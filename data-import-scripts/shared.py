@@ -57,7 +57,7 @@ def create_or_update_dataset(name, url, metadata, description, data):
     """ Create or update a dataset with a given name """
     edelweiss_api_url = "https://api.edelweissdata.com"
     api = API(edelweiss_api_url)
-    api.authenticate(refresh_token=os.environ.get("REFRESH_TOKEN"))
+    api.authenticate(refresh_token=os.environ.get("REFRESH_TOKEN"), scopes=['exceedQuota'])
 
     name = name
     if dataset_exists(api, name):
