@@ -5,8 +5,10 @@ name: Update Our World in Data dataset
 
 on:
   schedule:
-  - cron: '20 20 * * *'
-
+  - cron: '15 12 * * *'
+  push:
+    branches:
+      - main
 
 jobs:
 
