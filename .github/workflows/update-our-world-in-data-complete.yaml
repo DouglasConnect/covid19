@@ -1,7 +1,7 @@
 # This workflow runs as a cron job to download the current version of the our world in
 # data covid 19 dataset and publishes a new version of this dataset into our edelweiss
 # data develop instance
-name: Update our world in data complete dataset
+name: Update Our World in Data dataset
 
 on:
   schedule:
@@ -11,7 +11,7 @@ on:
 jobs:
 
   test:
-    name: Update our world in data complete dataset
+    name: Update Our World in Data dataset
     runs-on: ubuntu-latest
     steps:
     - name: Checkout the repository
@@ -28,7 +28,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: run update
+    - name: Run update
       working-directory: data-import-scripts
       env:
         REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}

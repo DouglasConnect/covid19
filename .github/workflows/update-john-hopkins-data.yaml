@@ -28,7 +28,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: run update
+    - name: Run update
       working-directory: data-import-scripts
       env:
         REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
