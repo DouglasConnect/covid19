@@ -26,7 +26,7 @@ def upload_data(api, dataset, dataframe, metadata, description, changelog):
         dataset.set_description(description)
         published_dataset = dataset.publish(changelog)
     except requests.HTTPError as err:
-        print("not published: ", err.response.text)
+        print("Error updating dataset: ", err.response.text)
 
 
 def create_initial_dataset(api, name, dataframe, metadata, description):
