@@ -24,7 +24,6 @@ def upload_data(api, dataset, dataframe, metadata, description, changelog):
         dataset.infer_schema()
         dataset.upload_metadata(metadata)
         dataset.set_description(description)
-        published_dataset = dataset.publish(changelog)
     except requests.HTTPError as err:
         print("Error updating dataset: ", err.response.text)
 
