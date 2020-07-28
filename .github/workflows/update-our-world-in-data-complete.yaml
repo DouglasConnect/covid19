@@ -1,5 +1,5 @@
-# This workflow runs as a cron job to download the current version of the our world in
-# data covid 19 dataset and publishes a new version of this dataset into our edelweiss
+# This workflow runs as a cron job to download the current version of the Our World in
+# Data covid 19 dataset and publishes a new version of this dataset into our edelweiss
 # data develop instance
 name: Update Our World in Data dataset
 
