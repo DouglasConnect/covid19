@@ -57,12 +57,12 @@ This data is made available in Edelweiss Data for easier consumption by the gene
 
 
 def get_data():
-    dataframe = pandas.read_csv(url)
+    dataframe = pandas.read_csv(url, low_memory=False)
     return dataframe
 
 
 now = datetime.datetime.now(datetime.timezone.utc)
 description = get_description(now)
 data = get_data()
-metadata = get_metadata(now, [ l for l in data.loc[:,"location"].unique() ])
+metadata = get_metadata(now, [loc for loc in data.loc[:,"location"].unique()])
 create_or_update_dataset(name, url, metadata, description, data)
