@@ -4,8 +4,9 @@ import os
 import tempfile
 import datetime
 import numpy
+import sys
 from edelweiss_data import API, QueryExpression as Q
-
+from slack_webhook import Slack
 
 def dataset_exists(api, name):
     """ Check if a dataset with this name already exists """
@@ -16,17 +17,14 @@ def dataset_exists(api, name):
 
 def upload_data(api, dataset, dataframe, metadata, description, changelog):
     """ Upload a given pandas dataframe, metadata and description and publish (a new version of) a dataset """
-    try:
-        with tempfile.TemporaryFile(mode="w+") as temp:
-            dataframe.to_csv(temp, line_terminator="\n", index=True)
-            temp.seek(0)
-            dataset.upload_data(temp)
-        dataset.infer_schema()
-        dataset.upload_metadata(metadata)
-        dataset.set_description(description)
-        published_dataset = dataset.publish(changelog)
-    except requests.HTTPError as err:
-        print("not published: ", err.response.text)
+    with tempfile.TemporaryFile(mode="w+") as temp:
+        dataframe.to_csv(temp, line_terminator="\n", index=True)
+        temp.seek(0)
+        dataset.upload_data(temp)
+    dataset.infer_schema()
+    dataset.upload_metadata(metadata)
+    dataset.set_description(description)
+    published_dataset = dataset.publish(changelog)
 
 
 def create_initial_dataset(api, name, dataframe, metadata, description):
@@ -55,12 +53,19 @@ def update_dataset(api, name, dataframe, metadata, description):
 
 def create_or_update_dataset(name, url, metadata, description, data):
     """ Create or update a dataset with a given name """
-    edelweiss_api_url = "https://api.edelweissdata.com"
-    api = API(edelweiss_api_url)
-    api.authenticate(refresh_token=os.environ.get("REFRESH_TOKEN"), scopes=['exceedQuota'])
+    try:
+        edelweiss_api_url = "https://api.edelweissdata.com"
+        api = API(edelweiss_api_url)
+        api.authenticate(refresh_token=os.environ.get("REFRESH_TOKEN"))
 
-    name = name
-    if dataset_exists(api, name):
-        update_dataset(api, name, data, metadata, description)
-    else:
-        create_initial_dataset(api, name, data, metadata, description)
+        name = name
+        if dataset_exists(api, name):
+            update_dataset(api, name, data, metadata, description)
+        else:
+            create_initial_dataset(api, name, data, metadata, description)
+    except Exception as e:
+        # Try to notify us via slack
+        slack = Slack(url=os.environ.get("SLACK_HOOK"))
+        message = f"Importing {name} failed with error: {e}"
+        slack.post(text=message)
+        raise # re-raise so the action is registered as failed
