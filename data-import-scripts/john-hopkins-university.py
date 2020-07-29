@@ -2,10 +2,7 @@
 # but then also one merged dataset that has all three of these indicators
 
 from shared import create_or_update_dataset
-import requests
 import pandas
-import os
-import tempfile
 import datetime
 from edelweiss_data import QueryExpression as Q
 
