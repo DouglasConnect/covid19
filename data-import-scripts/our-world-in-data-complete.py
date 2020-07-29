@@ -1,13 +1,13 @@
 from shared import create_or_update_dataset
-import requests
 import pandas
-import os
-import tempfile
 import datetime
+import requests
+import re
 from edelweiss_data import QueryExpression as Q
 
 name = "COVID-19 complete dataset by Our World In Data"
 url = r"https://covid.ourworldindata.org/data/owid-covid-data.csv"
+codebook_url = r"https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/owid-covid-data-codebook.md"
 
 
 def get_metadata(now, regions):
@@ -61,8 +61,21 @@ def get_data():
     return dataframe
 
 
+def get_column_descriptions():
+    regex = re.compile(r"^`(?P<name>[^`]+)`\|(?P<description>[^\|]+)\|(?P<source>.+)$")
+    response = requests.get(codebook_url)
+    response.raise_for_status()
+    codebook_markdown =  response.text.splitlines()
+    if codebook_markdown[2] != "Column|Description|Source":
+        raise Exception("Codebook header was not what we expected! " + codebook_markdown[0])
+    fragments = [ regex.match(line) for line in codebook_markdown[4:] ]
+    description_pairs = [ (fragment.group("name"), f"{fragment.group('description')} - Source: {fragment.group('source')}") for fragment in fragments ]
+    return { k: v for k,v in description_pairs }
+
+
 now = datetime.datetime.now(datetime.timezone.utc)
 description = get_description(now)
+column_descriptions = get_column_descriptions()
 data = get_data()
 metadata = get_metadata(now, [loc for loc in data.loc[:,"location"].unique()])
-create_or_update_dataset(name, url, metadata, description, data)
+create_or_update_dataset(name, url, metadata, description, data, column_descriptions)

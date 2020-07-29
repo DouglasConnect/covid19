@@ -2,3 +2,4 @@ pandas
 edelweiss_data
 requests
 numpy
+slack-webhook
