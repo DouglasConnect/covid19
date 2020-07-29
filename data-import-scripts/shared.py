@@ -1,6 +1,7 @@
 import os
 import tempfile
 import datetime
+from pandas import DataFrame
 from typing import Optional, Dict
 from edelweiss_data.api import InProgressDataset
 import numpy
@@ -54,7 +55,7 @@ def update_dataset(api: API, name: str, dataframe: DataFrame, metadata: dict, de
     upload_data_and_publish(api, dataset, dataframe, metadata, description, column_descriptions, "Daily update of data at {}".format(datetime.datetime.now()))
 
 
-def create_or_update_dataset(name: str, url: str, metadata: dict, description: str, data: DataFrame, column_descriptions: Optional[Dict[str, str]]=None):
+def create_or_update_dataset(name: str, metadata: dict, description: str, data: DataFrame, column_descriptions: Optional[Dict[str, str]]=None):
     """ Create or update a dataset with a given name """
     try:
         edelweiss_api_url = "https://api.edelweissdata.com"

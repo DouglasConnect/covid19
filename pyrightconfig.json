@@ -1,0 +1,14 @@
+{
+  "include": [
+    "data-import-scripts"
+  ],
+
+  "exclude": [
+  ],
+  "executionEnvironments": [
+    {
+      "root": "data-import-scripts",
+      "pythonVersion": "3.6"
+    }
+  ]
+}

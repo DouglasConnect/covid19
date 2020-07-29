@@ -5,7 +5,7 @@ name: Update Robert Koch Institute timeseries dataset
 
 on:
   schedule:
-  - cron: '15 9 * * *'
+  - cron: '45 9 * * *'
 
 jobs:
 

@@ -119,9 +119,9 @@ for source, data in zip(sources, dataframes):
     name = "COVID-19 dataset by John Hopkins University - {}".format(source["label"])
     metadata = get_metadata(now, source["url"], regions)
     description = get_description(now, source["label"], source["url"])
-    create_or_update_dataset(name, source["url"], metadata, description, data)
+    create_or_update_dataset(name, metadata, description, data)
 
 name = "COVID-19 dataset by John Hopkins University - Merged long form (cases, deaths, recovered)"
 metadata = get_metadata(now, [source["url"] for source in sources], regions) # We have a 3 level index and need all distinct entries of the first 2 levels
 description = get_merged_description(now)
-create_or_update_dataset(name, source["url"], metadata, description, merged)
+create_or_update_dataset(name,  metadata, description, merged)
