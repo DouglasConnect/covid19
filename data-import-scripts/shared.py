@@ -5,8 +5,7 @@ from pandas import DataFrame
 from typing import Optional, Dict
 from slack_webhook import Slack
 
-from edelweiss_data.api import InProgressDataset
-from edelweiss_data import API, QueryExpression as Q
+from edelweiss_data import API, InProgressDataset, QueryExpression as Q
 
 
 def dataset_exists(api: API, name: str):
