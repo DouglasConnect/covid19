@@ -1,8 +1,8 @@
-from shared import create_or_update_dataset
+import numpy
 import pandas
 import datetime
-import numpy
-from edelweiss_data import QueryExpression as Q
+
+from shared import create_or_update_dataset
 
 name = "COVID-19 timeseries data for Germany by state (RKI data)"
 url = r"https://opendata.arcgis.com/datasets/dd4580c810204019a7b8eb3e0b329dd6_0.csv"

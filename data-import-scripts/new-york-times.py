@@ -1,7 +1,7 @@
-from shared import create_or_update_dataset
 import pandas
 import datetime
-from edelweiss_data import QueryExpression as Q
+
+from shared import create_or_update_dataset
 
 name = "COVID-19 data for the USA by state (New York Times data)"
 url = "https://github.com/nytimes/covid-19-data/raw/master/us-states.csv"

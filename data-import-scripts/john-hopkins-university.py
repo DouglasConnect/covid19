@@ -1,10 +1,10 @@
 # For the John Hopkins data we publish the three single datasets for global confirmed cases, deaths and recovered,
 # but then also one merged dataset that has all three of these indicators
 
-from shared import create_or_update_dataset
 import pandas
 import datetime
-from edelweiss_data import QueryExpression as Q
+
+from shared import create_or_update_dataset
 
 
 def clean_dataframe(df, value_column_name):

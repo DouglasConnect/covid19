@@ -3,10 +3,11 @@ import tempfile
 import datetime
 from pandas import DataFrame
 from typing import Optional, Dict
-from edelweiss_data.api import InProgressDataset
-import numpy
-from edelweiss_data import API, InProgressDataset, QueryExpression as Q
 from slack_webhook import Slack
+
+from edelweiss_data.api import InProgressDataset
+from edelweiss_data import API, QueryExpression as Q
+
 
 def dataset_exists(api: API, name: str):
     """ Check if a dataset with this name already exists """
@@ -15,7 +16,7 @@ def dataset_exists(api: API, name: str):
     return not datasets.empty
 
 
-def upload_data_and_publish(api: API, dataset: InProgressDataset, dataframe : DataFrame, metadata: dict, description: str, column_descriptions: Optional[Dict[str, str]], changelog: str):
+def upload_data_and_publish(api: API, dataset: InProgressDataset, dataframe: DataFrame, metadata: dict, description: str, column_descriptions: Optional[Dict[str, str]], changelog: str):
     """ Upload a given pandas dataframe, metadata and description and publish (a new version of) a dataset """
     with tempfile.TemporaryFile(mode="w+") as temp:
         dataframe.to_csv(temp, line_terminator="\n", index=True)
@@ -55,7 +56,7 @@ def update_dataset(api: API, name: str, dataframe: DataFrame, metadata: dict, de
     upload_data_and_publish(api, dataset, dataframe, metadata, description, column_descriptions, "Daily update of data at {}".format(datetime.datetime.now()))
 
 
-def create_or_update_dataset(name: str, metadata: dict, description: str, data: DataFrame, column_descriptions: Optional[Dict[str, str]]=None):
+def create_or_update_dataset(name: str, metadata: dict, description: str, data: DataFrame, column_descriptions: Optional[Dict[str, str]] = None):
     """ Create or update a dataset with a given name """
     try:
         edelweiss_api_url = "https://api.edelweissdata.com"
@@ -72,4 +73,4 @@ def create_or_update_dataset(name: str, metadata: dict, description: str, data: 
         slack = Slack(url=os.environ.get("SLACK_HOOK"))
         message = f"Importing {name} failed with error: {e}"
         slack.post(text=message)
-        raise # re-raise so the action is registered as failed
+        raise  # re-raise so the action is registered as failed
