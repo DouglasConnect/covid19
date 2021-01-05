@@ -22,7 +22,7 @@ def get_metadata(now, regions):
     return {
         "datetimeRetrieved": "{}".format(now),
         "upstreamSource": data_url,
-        "originalDataCollectionAgency": "https://www.ecdc.europa.eu/en/coronavirus",
+        "originalDataCollectionAgency": "https://systems.jhu.edu/",
         "dataBackgroundInformation": "https://ourworldindata.org/coronavirus-source-data",
         "estimatedReportingCutoff": "{}".format(estimated_reporting_cutoff),
         "category": "covid-19",
@@ -43,9 +43,9 @@ def get_metadata(now, regions):
 
 def get_description(now):
     return """# COVID-19 data for all countries
-### Compiled and aggregated by the European Centre for Disease Prevention and Control via Our World In Data
+### Compiled and aggregated by the Center for Systems Science and Engineering (CSSE) at Johns Hopkins University via Our World In Data
 
-This dataset was created at {} created once daily around 6pm CET from [the original dataset by our world in data]({}) which in turn sources the data from the European Centre for Disease Prevention and Control (ECDC)
+This dataset was created at {} and is usually updated once daily around 8am UTC from [the original dataset by our world in data]({}) which in turn sources the data from the Center for Systems Science and Engineering (CSSE) at Johns Hopkins University
 ([more information on the process](https://ourworldindata.org/coronavirus-source-data)).
 
 This data is made available in Edelweiss Data for easier consumption by the general public for educational purposes under a [CC BY-NC-SA license]("license": "https://creativecommons.org/licenses/by-nc-sa/4.0/")
