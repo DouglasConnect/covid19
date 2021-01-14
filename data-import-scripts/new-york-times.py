@@ -6,7 +6,7 @@ from shared import create_or_update_dataset
 name = "COVID-19 data for the USA by state (New York Times data)"
 url = "https://github.com/nytimes/covid-19-data/raw/master/us-states.csv"
 
-
+# dummy change 1 - used to make sure cron actions keep running
 def get_metadata(now, regions):
     today = datetime.datetime.now()
     # It seems NYT data is updated around 14:00 UTC every day with data from the previous day but no hard information is available

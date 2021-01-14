@@ -6,7 +6,7 @@ from shared import create_or_update_dataset
 
 name = "COVID-19 timeseries data for Germany by state (RKI data)"
 url = r"https://opendata.arcgis.com/datasets/dd4580c810204019a7b8eb3e0b329dd6_0.csv"
-
+# dummy change 1 - used to make sure cron actions keep running
 
 def get_metadata(now, regions):
     today = datetime.datetime.now()
